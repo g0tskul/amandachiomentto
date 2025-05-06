@@ -1,0 +1,26 @@
+body {
+
+background-image: url('monikafundo.png');
+
+
+}
+
+.container {
+
+position: relative
+
+}
+img {
+
+position: absolute
+width: 270px;
+height: 330px
+top: 90px;
+left: 900px;
+
+}
+
+.imagens img[src="monikanochibi.png"] {
+    width: 700px !important;
+    height: auto;
+}

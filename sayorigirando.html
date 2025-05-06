@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="xd.css">
+    <title>Jogo da Forca com a Sayori!!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdf0f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 36px;
+            color: #66ccff;
+        }
+
+        h4 {
+            font-size: 18px;
+            color: #66ccff;
+        }
+
+        .gif-e-mensagem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .gif-e-mensagem img {
+            width: 300px;
+            height: auto;
+        }
+
+        #mensagem {
+            font-weight: bold;
+            font-size: 22px;
+            color: #66ccff;
+            max-width: 300px;
+            text-align: left;
+        }
+
+        #jogo {
+            padding: 20px;
+        }
+
+        #palavra, #letras-erradas {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        #input-letra {
+            padding: 10px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Jogo da Forca com a Sayori</h1>
+
+<h4>Sayori: OLÁ! Digite uma letra e vamos nos divertir!</h4>
+
+<div class="gif-e-mensagem">
+    <img src="sayorigirando.gif" alt="Sayori está com você para jogar!!">
+    <div id="mensagem"></div>
+</div>
+
+<audio id="musica" autoplay loop muted>
+    <source src="audioddlc.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    window.addEventListener('click', () => {
+        const audio = document.getElementById("musica");
+        audio.muted = false;
+        audio.play();
+    }, { once: true });
+</script>
+
+<div id="jogo">
+    <div id="palavra">_ _ _ _ _</div>
+    <input type="text" id="input-letra" maxlength="1" placeholder="Digite uma letra" autofocus>
+    <div id="letras-erradas">Letras erradas: </div>
+</div>
+
+<script>
+    const palavras = ["BISCOITO", "LITERATURA", "CORDA", "FELICIDADE", "CLUBE", "AMOR", "JUNTOS", "GENKI GIRL", "SAYORIOGG", "AMIGOS"];
+    let palavra = palavras[Math.floor(Math.random() * palavras.length)];
+    let palavraExibida = Array(palavra.length).fill("_");
+    let letrasErradas = [];
+    let tentativas = 6;
+
+    const palavraDiv = document.getElementById("palavra");
+    const input = document.getElementById("input-letra");
+    const letrasErradasDiv = document.getElementById("letras-erradas");
+    const mensagem = document.getElementById("mensagem");
+
+    palavraDiv.textContent = palavraExibida.join(" ");
+
+    input.addEventListener("keyup", function () {
+        const letra = input.value.toUpperCase();
+        input.value = "";
+
+        if (!letra.match(/[A-Z]/) || letra.length !== 1) return;
+
+        if (palavra.includes(letra)) {
+            palavra.split("").forEach((char, idx) => {
+                if (char === letra) palavraExibida[idx] = letra;
+            });
+        } else if (!letrasErradas.includes(letra)) {
+            letrasErradas.push(letra);
+            tentativas--;
+        }
+
+        palavraDiv.textContent = palavraExibida.join(" ");
+        letrasErradasDiv.textContent = "Letras erradas: " + letrasErradas.join(", ");
+
+        if (palavraExibida.join("") === palavra) {
+            mensagem.textContent = "Sayori: YAY!!!!!";
+            input.disabled = true;
+        } else if (tentativas === 0) {
+            mensagem.textContent = `Sayori: Aw :( você perdeu, a palavra era "${palavra}".`;
+            input.disabled = true;
+        }
+    });
+</script>
+
+</body>
+</html>
